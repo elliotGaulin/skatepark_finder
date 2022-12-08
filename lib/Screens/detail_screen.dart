@@ -1,27 +1,26 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailScreen extends StatelessWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>> doc;
 
-  const DetailPage({Key? key, required this.doc}) : super(key: key);
-  Future<void> _launchUrl(Uri _url) async {
-    if (!await launchUrl(_url)) {
-      throw 'Could not launch $_url';
+  const DetailScreen({Key? key, required this.doc}) : super(key: key);
+  Future<void> _launchUrl(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw 'Could not launch $url';
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(doc['nom']),
         actions: [
           IconButton(
-            icon: Icon(Icons.map),
+            icon: const Icon(Icons.map),
             onPressed: () {
               _launchUrl(Uri.parse(doc['mapsUrl']));
             },
@@ -58,8 +57,8 @@ class DetailPage extends StatelessWidget {
               allowHalfRating: true,
               ignoreGestures: true,
               itemCount: 5,
-              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-              itemBuilder: (context, _) => Icon(
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => const Icon(
                 Icons.star,
                 color: Colors.amber,
               ),
