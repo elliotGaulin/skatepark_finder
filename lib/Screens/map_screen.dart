@@ -4,16 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:skatepark_finder/Screens/add_skatepark_screen.dart';
-import 'package:skatepark_finder/Screens/detail_screen.dart';
 import 'package:skatepark_finder/Screens/login_sreen.dart';
-import '../Widgets/Marker.dart';
-import '../firebase_options.dart';
+import '../Widgets/marker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:map/map.dart' as map;
 import 'package:latlng/latlng.dart';
+import 'list_skatepark_screen.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key, required this.title});
@@ -40,9 +38,8 @@ class _MapScreenState extends State<MapScreen> {
         .collection('skatepark')
         .get()
         .then((QuerySnapshot<Map<String, dynamic>> querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        print(doc.runtimeType);
-        _docs.add(doc);
+      setState(() {
+        _docs = querySnapshot.docs;
       });
     });
 
@@ -51,6 +48,19 @@ class _MapScreenState extends State<MapScreen> {
       _currentPosition = LatLng(position.latitude, position.longitude);
       controller.center = LatLng(position.latitude, position.longitude);
       setState(() {});
+    });
+  }
+
+  @override
+  void setState(fn) {
+    super.setState(fn);
+    FirebaseFirestore.instance
+        .collection('skatepark')
+        .get()
+        .then((QuerySnapshot<Map<String, dynamic>> querySnapshot) {
+      setState(() {
+        _docs = querySnapshot.docs;
+      });
     });
   }
 
@@ -113,12 +123,6 @@ class _MapScreenState extends State<MapScreen> {
       _loggedIn = user != null;
     });
 
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -127,17 +131,49 @@ class _MapScreenState extends State<MapScreen> {
             icon: const Icon(Icons.add_circle_outline),
             onPressed: () async {
               User? user = await FirebaseAuth.instance.currentUser;
+              callback(Map<String, dynamic> skatepark) {
+                FirebaseFirestore.instance
+                    .collection("skatepark")
+                    .add(skatepark);
+                setState(() {});
+                if(Navigator.canPop(context))
+                  Navigator.pop(context);
+              }
+
               if (user != null) {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const AddSkateparkScreen()));
+                    builder: (context) => AddSkateparkScreen(
+                          title: "Ajouter un skatepark",
+                          callback: callback,
+                        )));
               } else {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => LoginScreen(
-                          nextScreen: const AddSkateparkScreen(),
+                          nextScreen: AddSkateparkScreen(
+                            title: "Ajouter un skatepark",
+                            callback: callback,
+                          ),
                         )));
               }
             },
           ),
+          IconButton(
+              icon: const Icon(Icons.list),
+              onPressed: () async {
+                User? user = await FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ListSkateparkScreen(
+                            title: "Liste des skateparks",
+                          )));
+                } else {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LoginScreen(
+                            nextScreen: const ListSkateparkScreen(
+                                title: "Liste des skateparks"),
+                          )));
+                }
+              }),
           IconButton(
             icon:
                 _loggedIn ? const Icon(Icons.logout) : const Icon(Icons.login),

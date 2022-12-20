@@ -52,7 +52,7 @@ class DetailScreen extends StatelessWidget {
           Center(
             child: RatingBar.builder(
               initialRating: doc['note'],
-              minRating: 1,
+              minRating: 0,
               direction: Axis.horizontal,
               allowHalfRating: true,
               ignoreGestures: true,
@@ -62,9 +62,7 @@ class DetailScreen extends StatelessWidget {
                 Icons.star,
                 color: Colors.amber,
               ),
-              onRatingUpdate: (rating) {
-                print(rating);
-              },
+              onRatingUpdate: (rating) {},
             ),
           ),
         ],

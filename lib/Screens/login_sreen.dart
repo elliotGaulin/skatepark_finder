@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:skatepark_finder/Screens/add_skatepark_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  Widget? nextScreen;
+  final Widget? nextScreen;
 
-  LoginScreen({required this.nextScreen, super.key});
+  const LoginScreen({required this.nextScreen, super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
