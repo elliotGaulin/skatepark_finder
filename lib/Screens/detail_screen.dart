@@ -3,10 +3,13 @@ import "package:flutter/material.dart";
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// Ecran de détail d'un skatepark
 class DetailScreen extends StatelessWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>> doc;
 
   const DetailScreen({Key? key, required this.doc}) : super(key: key);
+
+  //Ouvre l'url dans le navigateur web
   Future<void> _launchUrl(Uri url) async {
     if (!await launchUrl(url)) {
       throw 'Could not launch $url';

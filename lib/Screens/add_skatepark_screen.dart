@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:skatepark_finder/Widgets/my_button.dart';
 
+/// La page d'ajout ou de modification d'un skatepark. 
+/// L'action est déterminée par le paramètre callback.
+/// Les champs sont pré-remplis si on fourni l'objet skatepark.
 class AddSkateparkScreen extends StatefulWidget {
   final String title;
   final QueryDocumentSnapshot<Map<String, dynamic>>? skatepark;
@@ -34,7 +37,7 @@ class _AddSkateparkScreenState extends State<AddSkateparkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title),login
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

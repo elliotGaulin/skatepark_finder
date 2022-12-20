@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:skatepark_finder/Screens/detail_screen.dart';
 
+/// Un marqueur sur la carte qui affiche un icone et qui ouvre une fenetre
 class Marker extends StatelessWidget{
   final Offset pos;
   final Color color;

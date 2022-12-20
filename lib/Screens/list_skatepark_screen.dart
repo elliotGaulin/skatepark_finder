@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:skatepark_finder/Widgets/skatepark_list_item.dart';
 
+/// La page de la liste des skatepark
 class ListSkateparkScreen extends StatefulWidget {
   const ListSkateparkScreen({Key? key, required this.title}) : super(key: key);
 

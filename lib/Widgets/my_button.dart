@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Un bouton qui grossit quand on le presse
 class MyButton extends StatefulWidget {
   final String text;
   final Function() onPressed;

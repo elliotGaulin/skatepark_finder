@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import '../Screens/add_skatepark_screen.dart';
 
+/// Un item de la liste des skatepark
 class SkateparkListItem extends StatelessWidget {
   final Color color;
   final QueryDocumentSnapshot<Map<String, dynamic>> skatepark;
@@ -24,6 +23,7 @@ class SkateparkListItem extends StatelessWidget {
           Expanded(
             child: Text(skatepark.data()['nom']),
           ),
+          //bouton pour modifier un skatepark
           IconButton(onPressed: () async  {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -38,6 +38,7 @@ class SkateparkListItem extends StatelessWidget {
             }, 
             icon: const Icon(Icons.edit)
           ),
+          //bouton pour supprimer un skatepark
           IconButton(
             onPressed: () async {
               delete();
